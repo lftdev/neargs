@@ -15,6 +15,20 @@ function parseBoolean (args, option) {
   return optionIndex !== -1
 }
 
+function parseArray (args, option) {
+  if (option.type !== 'array') throw new Error('Expected an array argument.')
+  const optionIndex = getOptionIndex(args, option)
+
+  const array = []
+  for (let index = optionIndex + 1; index < args.length; index++) {
+    const element = args[index]
+    if (element.startsWith('-')) break
+    array.push(element)
+  }
+
+  return array
+}
+
 export function parse (argv, options) {
   if (argv == null) throw new Error('Expected to receive the arguments array.')
   if (options == null || (typeof options !== 'object' && !Array.isArray(options))) throw new Error('Expected to receive the options object.')
@@ -31,6 +45,9 @@ export function parse (argv, options) {
         break
       case 'boolean':
         parsed = parseBoolean(args, options[0])
+        break
+      case 'array':
+        parsed = parseArray(args, options[0])
     }
     result[current.longAlias] = parsed
     return result

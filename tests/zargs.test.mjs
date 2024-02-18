@@ -16,4 +16,9 @@ describe('parse function:', () => {
     const parsed = parse(['env', 'path', '-f'], [{ shortAlias: 'f', longAlias: 'foo', type: 'boolean' }])
     expect(parsed.foo).toBe(true)
   })
+  it('should return parsed array into an object when an array option is given;', () => {
+    const elements = ['element1', 'element2', 'element3']
+    const parsed = parse(['env', 'path', '-f'].concat(elements), [{ shortAlias: 'f', longAlias: 'foo', type: 'array' }])
+    expect(parsed.foo).toStrictEqual(elements)
+  })
 })
