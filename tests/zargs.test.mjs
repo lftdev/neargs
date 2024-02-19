@@ -21,4 +21,16 @@ describe('parse function:', () => {
     const parsed = parse(['env', 'path', '-f'].concat(elements), [{ shortAlias: 'f', longAlias: 'foo', type: 'array' }])
     expect(parsed.foo).toStrictEqual(elements)
   })
+  it('should parse multiple options and return an object;', () => {
+    const elements = ['element1', 'element2', 'element3']
+    const parsed = parse(['env', 'path', '--bool', '--num', '432', '-f'].concat(elements),
+      [{ shortAlias: 'f', longAlias: 'foo', type: 'array' },
+        { shortAlias: 'b', longAlias: 'bool', type: 'boolean' },
+        { shortAlias: 'n', longAlias: 'num', type: 'number' },
+        { shortAlias: 'fl', longAlias: 'flag', type: 'boolean' }])
+    expect(parsed.foo).toStrictEqual(elements)
+    expect(parsed.num).toBe(432)
+    expect(parsed.bool).toBe(true)
+    expect(parsed.flag).toBe(false)
+  })
 })

@@ -37,17 +37,17 @@ export function parse (argv, options) {
   if (args.length === 0) throw new Error('Expected arguments array not to be empty.')
   if (args.some(element => typeof element !== 'string')) throw new Error('Expected argv array to contain strings only.')
 
-  return options.reduce((result, current) => {
+  return options.reduce((result, current, index) => {
     let parsed
     switch (current.type) {
       case 'number':
-        parsed = parseNumber(args, options[0])
+        parsed = parseNumber(args, options[index])
         break
       case 'boolean':
-        parsed = parseBoolean(args, options[0])
+        parsed = parseBoolean(args, options[index])
         break
       case 'array':
-        parsed = parseArray(args, options[0])
+        parsed = parseArray(args, options[index])
     }
     result[current.longAlias] = parsed
     return result
