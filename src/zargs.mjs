@@ -1,22 +1,24 @@
+import { ARRAY_OPTION_TYPE, BOOLEAN_OPTION_TYPE, NUMBER_OPTION_TYPE } from './constants.mjs'
+
 function getOptionIndex (args, option) {
   const index = args.indexOf(`-${option.shortAlias}`)
   return index !== -1 ? index : args.indexOf(`--${option.longAlias}`)
 }
 
 function parseNumber (args, option) {
-  if (option.type !== 'number') throw new Error('Expected a numeric argument.')
+  if (option.type !== NUMBER_OPTION_TYPE) throw new Error('Expected a numeric argument.')
   const optionIndex = getOptionIndex(args, option)
   return parseInt(args[optionIndex + 1])
 }
 
 function parseBoolean (args, option) {
-  if (option.type !== 'boolean') throw new Error('Expected a boolean argument.')
+  if (option.type !== BOOLEAN_OPTION_TYPE) throw new Error('Expected a boolean argument.')
   const optionIndex = getOptionIndex(args, option)
   return optionIndex !== -1
 }
 
 function parseArray (args, option) {
-  if (option.type !== 'array') throw new Error('Expected an array argument.')
+  if (option.type !== ARRAY_OPTION_TYPE) throw new Error('Expected an array argument.')
   const optionIndex = getOptionIndex(args, option)
 
   const array = []
@@ -40,13 +42,13 @@ export function parse (argv, options) {
   return options.reduce((result, current, index) => {
     let parsed
     switch (current.type) {
-      case 'number':
+      case NUMBER_OPTION_TYPE:
         parsed = parseNumber(args, options[index])
         break
-      case 'boolean':
+      case BOOLEAN_OPTION_TYPE:
         parsed = parseBoolean(args, options[index])
         break
-      case 'array':
+      case ARRAY_OPTION_TYPE:
         parsed = parseArray(args, options[index])
     }
     result[current.longAlias] = parsed
