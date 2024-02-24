@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { parse } from '../src/zargs.mjs'
+import { parse } from '../src/neargs.mjs'
 
 describe('parse function:', () => {
   it('should throw if argv array is not provided;', () => expect(() => parse()).toThrow())

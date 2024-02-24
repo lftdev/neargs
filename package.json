@@ -1,8 +1,8 @@
 {
-  "name": "zargs",
+  "name": "neargs",
   "version": "1.0.0",
   "description": "JavaScript CLI arguments parser.",
-  "main": "./src/zargs.mjs",
+  "main": "./src/neargs.mjs",
   "scripts": {
     "test": "vitest"
   },
