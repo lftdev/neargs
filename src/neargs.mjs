@@ -3,9 +3,7 @@ import { InputError } from './errors.mjs'
 import { parseArray, parseBoolean, parseNumber } from './parse-data-type.mjs'
 import { getOptionIndex } from './utils.mjs'
 
-const mandatoryOptionsArePresent = (args, mandatoryOptions) => mandatoryOptions.every(option => getOptionIndex(args, option) !== -1)
-
-export function parse (argv, options) {
+export function configureParser (argv, options) {
   if (!Array.isArray(argv)) throw new InputError('Expected to receive the arguments array.')
   if (!Array.isArray(options)) throw new InputError('Expected to receive the options object.')
 
@@ -14,24 +12,24 @@ export function parse (argv, options) {
   if (args.some(element => typeof element !== 'string')) throw new InputError('Expected argv array to contain strings only.')
 
   const mandatoryOptions = options.filter(option => option.mandatory)
-  if (mandatoryOptions.length !== 0)
+  if (mandatoryOptions.length !== 0) {
+    const mandatoryOptionsArePresent = (args, mandatoryOptions) => mandatoryOptions.every(option => getOptionIndex(args, option) !== -1)
     if (!mandatoryOptionsArePresent(args, mandatoryOptions)) throw new InputError(`Expected to receive all mandatory options:${mandatoryOptions.reduce((result, current) => result + `\n-${current.shortAlias}/--${current.longAlias}`, '')}.`)
+  }
 
-  const parsed = options.reduce((result, current, index) => {
+  return () => options.reduce((result, current, index) => {
     let parsed
     switch (current.type) {
-      case NUMBER_OPTION_TYPE:
-        parsed = parseNumber(args, options[index])
+      case ARRAY_OPTION_TYPE:
+        parsed = parseArray(args, options[index])
         break
       case BOOLEAN_OPTION_TYPE:
         parsed = parseBoolean(args, options[index])
         break
-      case ARRAY_OPTION_TYPE:
-        parsed = parseArray(args, options[index])
+      case NUMBER_OPTION_TYPE:
+        parsed = parseNumber(args, options[index])
     }
     result[current.longAlias] = parsed
     return result
   }, {})
-
-  return parsed
 }

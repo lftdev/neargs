@@ -1,6 +1,6 @@
 {
   "name": "neargs",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "JavaScript CLI arguments parser.",
   "main": "./src/neargs.mjs",
   "scripts": {
