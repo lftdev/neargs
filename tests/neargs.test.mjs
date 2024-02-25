@@ -33,4 +33,8 @@ describe('parse function:', () => {
     expect(parsed.bool).toBe(true)
     expect(parsed.flag).toBe(false)
   })
+  it('should throw if a mandatory option is not provided;', () => {
+    const mandatoryOptions = [{ shortAlias: 'f', longAlias: 'foo', type: 'boolean', mandatory: true }]
+    expect(() => parse(['env', 'path', '-g'], mandatoryOptions)).toThrowError(`Expected to receive all mandatory options:${mandatoryOptions.reduce((result, current) => result + `\n-${current.shortAlias}/--${current.longAlias}`, '')}.`)
+  })
 })

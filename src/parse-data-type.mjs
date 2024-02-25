@@ -1,10 +1,6 @@
 import { ARRAY_OPTION_TYPE, BOOLEAN_OPTION_TYPE, NUMBER_OPTION_TYPE } from './constants.mjs'
 import { DataTypeError } from './errors.mjs'
-
-function getOptionIndex (args, option) {
-  const index = args.indexOf(`-${option.shortAlias}`)
-  return index !== -1 ? index : args.indexOf(`--${option.longAlias}`)
-}
+import { getOptionIndex } from './utils.mjs'
 
 export function parseNumber (args, option) {
   if (option.type !== NUMBER_OPTION_TYPE) throw new DataTypeError('Expected a numeric argument.')
